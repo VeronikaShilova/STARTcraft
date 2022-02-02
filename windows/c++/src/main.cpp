@@ -5,7 +5,6 @@
 #include <thread>
 #include <chrono>
 
-// coucou
 void PlayGame();
 
 int main(int argc, char * argv[])
