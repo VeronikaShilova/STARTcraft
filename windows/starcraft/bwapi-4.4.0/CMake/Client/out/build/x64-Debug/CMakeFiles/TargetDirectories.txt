@@ -1,0 +1,3 @@
+C:/Users/Xiyao/source/repos/STARTcraft/windows/starcraft/bwapi-4.4.0/CMake/Client/out/build/x64-Debug/CMakeFiles/BWAPIClientd.dir
+C:/Users/Xiyao/source/repos/STARTcraft/windows/starcraft/bwapi-4.4.0/CMake/Client/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/Xiyao/source/repos/STARTcraft/windows/starcraft/bwapi-4.4.0/CMake/Client/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
