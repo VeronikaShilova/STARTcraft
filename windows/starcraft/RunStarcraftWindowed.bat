@@ -1,1 +1,0 @@
-injectory_x86.exe --launch StarCraft.exe --inject wmode.dll
