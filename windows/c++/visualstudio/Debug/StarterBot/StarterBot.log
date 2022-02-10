@@ -1,0 +1,6 @@
+﻿  main.cpp
+  MapTools.cpp
+  StarterBot.cpp
+  Tools.cpp
+main.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  StarterBot.vcxproj -> C:\Users\nikit\Documents\GitHub\STARTcraft\windows\bin\StarterBot_d.exe
