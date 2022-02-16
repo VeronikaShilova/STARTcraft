@@ -1,5 +1,6 @@
 #include <BWAPI.h>
 #include <BWAPI/Client.h>
+
 #include "StarterBot.h"
 #include <iostream>
 #include <thread>

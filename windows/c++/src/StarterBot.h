@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MapTools.h"
+#include "BT_NODE.cpp"
 
 #include <BWAPI.h>
 
