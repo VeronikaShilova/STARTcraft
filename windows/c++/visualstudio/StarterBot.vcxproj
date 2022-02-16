@@ -12,6 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\BT_Build.h" />
+    <ClInclude Include="..\src\BT_LEAF.h" />
+    <ClInclude Include="..\src\BT_NODE.h" />
+    <ClInclude Include="..\src\BT_SELECTOR.h" />
+    <ClInclude Include="..\src\BT_SEQUENCER.h" />
     <ClInclude Include="..\src\Grid.hpp" />
     <ClInclude Include="..\src\MapTools.h" />
     <ClInclude Include="..\src\StarterBot.h" />

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "MapTools.h"
-#include "BT_NODE.cpp"
-
+//#include "BT_NODE.h"
 #include <BWAPI.h>
 
 class StarterBot
