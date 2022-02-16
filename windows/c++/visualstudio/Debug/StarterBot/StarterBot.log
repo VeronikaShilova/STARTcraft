@@ -1,6 +1,38 @@
-﻿  main.cpp
+﻿  BT_Build.cpp
+  BT_LEAF.cpp
+  BT_NODE.cpp
+  BT_SELECTOR.cpp
+  BT_SEQUENCER.cpp
+  main.cpp
   MapTools.cpp
   StarterBot.cpp
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_NODE.cpp(3,15): error C2011: 'BT_NODE' : redéfinition du type 'class' (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_NODE.cpp(3): message : voir la déclaration de 'BT_NODE' (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SELECTOR.cpp(3,36): error C2504: 'BT_NODE' : classe de base non définie (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SELECTOR.cpp(8,11): error C3646: 'Evaluate' : spécificateur de substitution inconnu (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SELECTOR.cpp(8,19): error C2059: erreur de syntaxe : '(' (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SELECTOR.cpp(8,32): error C2334: jetons inattendus avant '{' ; corps apparent de la fonction ignoré (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SELECTOR.cpp(6,61): error C2614: 'BT_SELECTOR' : initialisation de membre non conforme : 'BT_NODE' n'est ni une base ni un membre (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SELECTOR.cpp(7,44): error C2614: 'BT_SELECTOR' : initialisation de membre non conforme : 'BT_NODE' n'est ni une base ni un membre (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SEQUENCER.cpp(3,37): error C2504: 'BT_NODE' : classe de base non définie (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SEQUENCER.cpp(8,11): error C3646: 'Evaluate' : spécificateur de substitution inconnu (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SEQUENCER.cpp(8,19): error C2059: erreur de syntaxe : '(' (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SEQUENCER.cpp(8,32): error C2334: jetons inattendus avant '{' ; corps apparent de la fonction ignoré (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SEQUENCER.cpp(6,62): error C2614: 'BT_SEQUENCER' : initialisation de membre non conforme : 'BT_NODE' n'est ni une base ni un membre (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_SEQUENCER.cpp(7,45): error C2614: 'BT_SEQUENCER' : initialisation de membre non conforme : 'BT_NODE' n'est ni une base ni un membre (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(3,32): error C2504: 'BT_NODE' : classe de base non définie (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(6,22): error C2027: utilisation du type non défini 'BT_NODE' (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_NODE.cpp(3): message : voir la déclaration de 'BT_NODE' (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(6,28): error C2059: erreur de syntaxe : '*' (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(6,54): error C2091: fonction retournée par la fonction (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(6,54): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(9,19): error C3646: 'EvaluateCBK' : spécificateur de substitution inconnu (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(9,30): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(12,30): error C2061: erreur de syntaxe : identificateur 'EVALUATE_CBK' (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(13,32): error C2091: fonction retournée par la fonction (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(12,70): error C2065: 'evaluateCBK' : identificateur non déclaré (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(12,58): error C2614: 'BT_LEAF' : initialisation de membre non conforme : 'EvaluateCBK' n'est ni une base ni un membre (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(12,84): error C2614: 'BT_LEAF' : initialisation de membre non conforme : 'BT_NODE' n'est ni une base ni un membre (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(14,9): error C2065: 'EvaluateCBK' : identificateur non déclaré (compilation du fichier source ..\src\BT_Build.cpp)
+C:\Users\Xiyao\source\repos\STARTcraft\windows\c++\src\BT_LEAF.cpp(15,16): error C3861: 'EvaluateCBK' : identificateur introuvable (compilation du fichier source ..\src\BT_Build.cpp)
   Tools.cpp
-main.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  StarterBot.vcxproj -> C:\Users\nikit\Documents\GitHub\STARTcraft\windows\bin\StarterBot_d.exe
