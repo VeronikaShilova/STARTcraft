@@ -10,7 +10,7 @@ namespace Tools
     int CountUnitsOfType(BWAPI::UnitType type, const BWAPI::Unitset& units);
 
     BWAPI::Unit GetUnitOfType(BWAPI::UnitType type);
-    BWAPI::Unit GetDepot();
+    BWAPI::Unit GetDepot(const BWAPI::UnitType depot);
 
     bool BuildBuilding(BWAPI::UnitType type);
 

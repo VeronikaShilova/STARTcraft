@@ -51,9 +51,11 @@ BWAPI::Unit Tools::GetUnitOfType(BWAPI::UnitType type)
     return nullptr;
 }
 
-BWAPI::Unit Tools::GetDepot()
+BWAPI::Unit Tools::GetDepot(const BWAPI::UnitType depot)
 {
-    const BWAPI::UnitType depot = BWAPI::Broodwar->self()->getRace().getResourceDepot();
+    // for resource depot
+    //const BWAPI::UnitType depot = BWAPI::Broodwar->self()->getRace().getResourceDepot();
+    
     return GetUnitOfType(depot);
 }
 

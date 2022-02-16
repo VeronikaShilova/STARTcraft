@@ -33,6 +33,8 @@ void StarterBot::onFrame()
     // Update our MapTools information
     m_mapTools.onFrame();
 
+    //ScoutUnexploredMap();
+
     // Send our idle workers to mine minerals so they don't just stand there
     sendIdleWorkersToMinerals();
 
@@ -41,6 +43,14 @@ void StarterBot::onFrame()
 
     // Build more supply if we are going to run out soon
     buildAdditionalSupply();
+
+    // Train Marine
+    const BWAPI::UnitType UnittoTrain = BWAPI::UnitTypes::Terran_Marine;
+    const BWAPI::UnitType depot = BWAPI::UnitTypes::Terran_Barracks;
+    trainUnits(UnittoTrain, depot);
+
+    // Build Barracks
+    buildDepot(depot);
 
     // Draw unit health bars, which brood war unfortunately does not do
     Tools::DrawUnitHealthBars();
@@ -71,19 +81,31 @@ void StarterBot::sendIdleWorkersToMinerals()
 
 // Train more workers so we can gather more income
 void StarterBot::trainAdditionalWorkers()
-{
+{ 
     const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
-    const int workersWanted = 20;
+    const int workersWanted = 10;
     const int workersOwned = Tools::CountUnitsOfType(workerType, BWAPI::Broodwar->self()->getUnits());
     if (workersOwned < workersWanted)
     {
-        // get the unit pointer to my depot
-        const BWAPI::Unit myDepot = Tools::GetDepot();
+    // get the unit pointer to my depot
+        const BWAPI::Unit myDepot = Tools::GetDepot(BWAPI::Broodwar->self()->getRace().getResourceDepot());
 
-        // if we have a valid depot unit and it's currently not training something, train a worker
-        // there is no reason for a bot to ever use the unit queueing system, it just wastes resources
+    // if we have a valid depot unit and it's currently not training something, train a worker
+    // there is no reason for a bot to ever use the unit queueing system, it just wastes resources
         if (myDepot && !myDepot->isTraining()) { myDepot->train(workerType); }
     }
+}
+
+void StarterBot::trainUnits(const BWAPI::UnitType UnittoTrain, const BWAPI::UnitType Depot) {
+    // get the unit pointer to my depot
+    const BWAPI::Unit myDepot = Tools::GetDepot(Depot);
+
+    // if we have a valid depot unit and it's currently not training something, train a worker
+    // there is no reason for a bot to ever use the unit queueing system, it just wastes resources
+    if (myDepot && !myDepot->isTraining()) { 
+        myDepot->train(UnittoTrain);
+    }
+
 }
 
 // Build more supply if we are going to run out soon
@@ -98,17 +120,44 @@ void StarterBot::buildAdditionalSupply()
     // Otherwise, we are going to build a supply provider
     const BWAPI::UnitType supplyProviderType = BWAPI::Broodwar->self()->getRace().getSupplyProvider();
 
-    const bool startedBuilding = Tools::BuildBuilding(supplyProviderType);
+    buildDepot(supplyProviderType);
+}
+
+void StarterBot::buildDepot(const BWAPI::UnitType DepotType) {
+    const bool startedBuilding = Tools::BuildBuilding(DepotType);
     if (startedBuilding)
     {
-        BWAPI::Broodwar->printf("Started Building %s", supplyProviderType.getName().c_str());
+        BWAPI::Broodwar->printf("Started Building %s", DepotType.getName().c_str());
     }
 }
+
+// Explore the map
+void StarterBot::ScoutUnexploredMap() {
+    const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
+    Scout = Tools::GetUnitOfType(workerType);
+
+    if (!Scout) {
+        const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
+        Scout = Tools::GetUnitOfType(workerType);
+    }
+    auto& startLocations = BWAPI::Broodwar->getStartLocations();
+
+    for (BWAPI::TilePosition tp : startLocations) {
+        if (BWAPI::Broodwar->isExplored(tp)) { continue; }
+
+        BWAPI::Position pos(tp);
+        BWAPI::Broodwar->drawCircleMap(pos, 32, BWAPI::Colors::Blue, true);
+
+        Scout->move(pos);
+    }
+
+}
+
 
 // Draw some relevent information to the screen to help us debug the bot
 void StarterBot::drawDebugInformation()
 {
-    BWAPI::Broodwar->drawTextScreen(BWAPI::Position(10, 10), "Hello, World!\n");
+    BWAPI::Broodwar->drawTextScreen(BWAPI::Position(10, 10), "Test version\n");
     Tools::DrawUnitCommands();
     Tools::DrawUnitBoundingBoxes();
 }

@@ -10,12 +10,19 @@ class StarterBot
 
 public:
 
+	BWAPI::Unit Scout = nullptr;
+
     StarterBot();
 
     // helper functions to get you started with bot programming and learn the API
     void sendIdleWorkersToMinerals();
     void trainAdditionalWorkers();
     void buildAdditionalSupply();
+	
+	void trainUnits(const BWAPI::UnitType UnitType, const BWAPI::UnitType Depot);
+	void buildDepot(const BWAPI::UnitType DepotType);
+	
+	void ScoutUnexploredMap();
     void drawDebugInformation();
 
     // functions that are triggered by various BWAPI events from main.cpp
