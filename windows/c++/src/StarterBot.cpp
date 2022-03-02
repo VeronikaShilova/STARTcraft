@@ -73,17 +73,27 @@ void StarterBot::onFrame()
 bool StarterBot::supplySuperiorTo(void* data) {
     Data* dataPtr = (Data *)data;
     return dataPtr->supply > 8;
+    std::cout << "arrived at supply" << std::endl;
 }
 
 void StarterBot::buildBT() {
+    std::cout << "Arrived at the beginning of tree" << std::endl;
     BT_SEQUENCER *root = new BT_SEQUENCER(NULL, 10);
-    BT_SELECTOR *getSCV = new BT_SELECTOR(root, 1);
+    BT_SELECTOR *getSCV = new BT_SELECTOR(root, 2);
     root->AddChild(getSCV);
+
+    std::cout << "add child SCV succeed" << std::endl;
+
     BT_CONDITION* testSupply = new BT_CONDITION(getSCV, supplySuperiorTo);
     BT_ACTION* recruitSCV = new BT_ACTION(getSCV, trainAdditionalWorkers);
-    testSupply->AddChild(getSCV);
-    testSupply->AddChild(recruitSCV);
+
+    getSCV->AddChild(testSupply);
+    std::cout << "-----------------------------------------------" << std::endl;
+
+    getSCV->AddChild(recruitSCV);
+
     behaviourTree = root;
+    std::cout << "Tree complete" << std::endl;
 }
 
 
@@ -121,7 +131,7 @@ bool StarterBot::trainAdditionalWorkers(void *data)
 
     // if we have a valid depot unit and it's currently not training something, train a worker
     // there is no reason for a bot to ever use the unit queueing system, it just wastes resources
-        if (myDepot && !myDepot->isTraining()) {
+        if (myDepot && !myDepot->isTraining() && BWAPI::Broodwar->self()->minerals() >= 50) {
             myDepot->train(workerType);
             return true;
         }
