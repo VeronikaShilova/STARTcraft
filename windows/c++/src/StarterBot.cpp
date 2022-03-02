@@ -19,6 +19,9 @@ void StarterBot::onStart()
 
     // Call MapTools OnStart
     m_mapTools.onStart();
+
+    // Build Behaviour Tree
+    buildBT();
 }
 
 // Called whenever the game ends and tells you if you won or not
@@ -33,24 +36,32 @@ void StarterBot::onFrame()
     // Update our MapTools information
     m_mapTools.onFrame();
 
+    // update data
+    data->supply = BWAPI::Broodwar->self()->supplyUsed();
+    data->maxSupply = Tools::GetTotalSupply(true);
+
+    // Run through the Behaviour Tree
+    behaviourTree->Evaluate(data);
+
+    
     //ScoutUnexploredMap();
 
     // Send our idle workers to mine minerals so they don't just stand there
     sendIdleWorkersToMinerals();
 
     // Train more workers so we can gather more income
-    trainAdditionalWorkers();
+    //trainAdditionalWorkers();
 
     // Build more supply if we are going to run out soon
-    buildAdditionalSupply();
-
+    //buildAdditionalSupply();
+    /*
     // Train Marine
     const BWAPI::UnitType UnittoTrain = BWAPI::UnitTypes::Terran_Marine;
     const BWAPI::UnitType depot = BWAPI::UnitTypes::Terran_Barracks;
     trainUnits(UnittoTrain, depot);
 
     // Build Barracks
-    buildDepot(depot);
+    buildDepot(depot);   */
 
     // Draw unit health bars, which brood war unfortunately does not do
     Tools::DrawUnitHealthBars();
@@ -58,6 +69,33 @@ void StarterBot::onFrame()
     // Draw some relevent information to the screen to help us debug the bot
     drawDebugInformation();
 }
+
+bool StarterBot::supplySuperiorTo(void* data) {
+    Data* dataPtr = (Data *)data;
+    return dataPtr->supply > 8;
+    std::cout << "arrived at supply" << std::endl;
+}
+
+void StarterBot::buildBT() {
+    std::cout << "Arrived at the beginning of tree" << std::endl;
+    BT_SEQUENCER *root = new BT_SEQUENCER(NULL, 10);
+    BT_SELECTOR *getSCV = new BT_SELECTOR(root, 2);
+    root->AddChild(getSCV);
+
+    std::cout << "add child SCV succeed" << std::endl;
+
+    BT_CONDITION* testSupply = new BT_CONDITION(getSCV, supplySuperiorTo);
+    BT_ACTION* recruitSCV = new BT_ACTION(getSCV, trainAdditionalWorkers);
+
+    getSCV->AddChild(testSupply);
+    std::cout << "-----------------------------------------------" << std::endl;
+
+    getSCV->AddChild(recruitSCV);
+
+    behaviourTree = root;
+    std::cout << "Tree complete" << std::endl;
+}
+
 
 // Send our idle workers to mine minerals so they don't just stand there
 void StarterBot::sendIdleWorkersToMinerals()
@@ -80,20 +118,25 @@ void StarterBot::sendIdleWorkersToMinerals()
 }
 
 // Train more workers so we can gather more income
-void StarterBot::trainAdditionalWorkers()
+bool StarterBot::trainAdditionalWorkers(void *data)
 { 
     const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
-    const int workersWanted = 10;
+    /*const int workersWanted = 10;
     const int workersOwned = Tools::CountUnitsOfType(workerType, BWAPI::Broodwar->self()->getUnits());
     if (workersOwned < workersWanted)
     {
+    */
     // get the unit pointer to my depot
-        const BWAPI::Unit myDepot = Tools::GetDepot(BWAPI::Broodwar->self()->getRace().getResourceDepot());
+    const BWAPI::Unit myDepot = Tools::GetDepot(BWAPI::Broodwar->self()->getRace().getResourceDepot());
 
     // if we have a valid depot unit and it's currently not training something, train a worker
     // there is no reason for a bot to ever use the unit queueing system, it just wastes resources
-        if (myDepot && !myDepot->isTraining()) { myDepot->train(workerType); }
-    }
+        if (myDepot && !myDepot->isTraining() && BWAPI::Broodwar->self()->minerals() >= 50) {
+            myDepot->train(workerType);
+            return true;
+        }
+        return false;
+    
 }
 
 void StarterBot::trainUnits(const BWAPI::UnitType UnittoTrain, const BWAPI::UnitType Depot) {

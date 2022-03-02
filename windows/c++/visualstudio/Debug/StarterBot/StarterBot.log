@@ -1,3 +1,16 @@
-﻿  main.cpp
-BT_Build.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  StarterBot.vcxproj -> C:\Users\nikit\Documents\GitHub\folder\windows\bin\StarterBot_d.exe
+﻿  BT_Build.cpp
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.cpp(3,22): error C2084: la fonction 'BT_Build::BT_Build(void)' a déjà un corps
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.h(11): message : voir la définition précédente de '{ctor}'
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.cpp(7,10): error C2259: 'BT_NODE' : impossible d'instancier une classe abstraite
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_NODE.h(3): message : voir la déclaration de 'BT_NODE'
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.cpp(7,10): message : à cause des membres suivants :
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.cpp(7,10): message : 'BT_NODE::State BT_NODE::Evaluate(void *)' : est abstrait
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_NODE.h(26): message : voir la déclaration de 'BT_NODE::Evaluate'
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.cpp(7,19): error C2259: 'BT_NODE' : impossible d'instancier une classe abstraite
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_NODE.h(3): message : voir la déclaration de 'BT_NODE'
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.cpp(7,19): message : à cause des membres suivants :
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.cpp(7,19): message : 'BT_NODE::State BT_NODE::Evaluate(void *)' : est abstrait
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_NODE.h(26): message : voir la déclaration de 'BT_NODE::Evaluate'
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_Build.cpp(7): error C2280: 'BT_NODE::BT_NODE(void)' : tentative de référencement d'une fonction supprimée
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_NODE.h(22): message : voir la déclaration de 'BT_NODE::BT_NODE'
+C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\c++\src\BT_NODE.h(22,5): message : 'BT_NODE::BT_NODE(void)' : la fonction a été supprimée explicitement
