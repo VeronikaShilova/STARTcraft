@@ -1,2 +1,2 @@
-windows/c++/visualstudio/*
-windows/bin/*
+windows/c++/visualstudio/**
+windows/bin/**
