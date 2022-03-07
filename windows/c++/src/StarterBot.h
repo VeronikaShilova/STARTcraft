@@ -32,6 +32,9 @@ public:
     void sendIdleWorkersToMinerals();
 	static void trainUnits(const BWAPI::UnitType UnitType, const BWAPI::UnitType Depot);
 	static void buildDepot(const BWAPI::UnitType DepotType);
+	
+	void sendMarinetoAttack(void* data);
+	
 	void ScoutUnexploredMap();
     void drawDebugInformation();
 

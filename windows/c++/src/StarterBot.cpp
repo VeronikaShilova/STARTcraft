@@ -138,6 +138,7 @@ void StarterBot::onFrame()
     // Run through the Behaviour Tree
     behaviourTree->Evaluate(data);
 
+    sendMarinetoAttack(data);
     //ScoutUnexploredMap();
 
     // Send our idle workers to mine minerals so they don't just stand there
@@ -193,6 +194,35 @@ void StarterBot::buildDepot(const BWAPI::UnitType DepotType) {
     if (startedBuilding)
     {
         BWAPI::Broodwar->printf("Started Building %s", DepotType.getName().c_str());
+    }
+}
+
+void StarterBot::sendMarinetoAttack(void* data){
+    StarterBot::Data* dataPtr = (StarterBot::Data*)data;
+    const BWAPI::Unitset& myUnits = BWAPI::Broodwar->self()->getUnits();
+    for (auto& unit : myUnits){
+        // if the unit is type Marine 
+        if (unit->getType() == BWAPI::UnitTypes::Terran_Marine && unit->isIdle()){
+            std::cout << "we have marine idle" << std::endl;
+            /*
+            BWAPI::TilePosition PlayerStart = BWAPI::Broodwar->enemy()->getStartLocation();
+            BWAPI::Position p_PlayerStart = BWAPI::Position(PlayerStart);
+
+            std::cout << "Enemy Start Location: " << p_PlayerStart << std::endl;
+            
+            BWAPI::Unitset PlayerUnit = BWAPI::Broodwar->enemy()->getUnits();
+            BWAPI::Unit closestPlayerStart = Tools::GetClosestUnitTo(p_PlayerStart, PlayerUnit); */
+
+            BWAPI::Unitset PlayerUnit = BWAPI::Broodwar->enemy()->getUnits();
+            BWAPI::Unit closestPlayerStart = Tools::GetClosestUnitTo(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()), PlayerUnit);
+
+            if (closestPlayerStart) {
+                std::cout << "Attacking" << std::endl;
+                unit->attack(closestPlayerStart);
+            }
+      
+        }
+
     }
 }
 
