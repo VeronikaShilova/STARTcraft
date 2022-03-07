@@ -1,5 +1,5 @@
-﻿  BT_ACTION.cpp
-  BT_CONDITION.cpp
+﻿  BT_LEAF.cpp
+  BT_LIST.cpp
   BT_NODE.cpp
   BT_SELECTOR.cpp
   BT_SEQUENCER.cpp
@@ -9,4 +9,4 @@
   Tools.cpp
   Génération de code en cours
   Fin de la génération du code
-  StarterBot.vcxproj -> C:\Users\Xiyao\Desktop\INF584A\git_workshop\windows\bin\StarterBot.exe
+  StarterBot.vcxproj -> C:\Users\Xiyao\Desktop\INF584A\new_BT\STARTcraft\windows\bin\StarterBot.exe

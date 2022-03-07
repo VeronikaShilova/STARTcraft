@@ -1,7 +1,11 @@
 #pragma once
 
-#include "MapTools.h"
 #include "BT_NODE.h"
+#include "MapTools.h"
+#include "BT_LEAF.h"
+#include "BT_LIST.h"
+#include "BT_SEQUENCER.h"
+#include "BT_SELECTOR.h"
 #include <BWAPI.h>
 
 class StarterBot
@@ -10,6 +14,7 @@ class StarterBot
 
 public:
 	struct Data {
+		int SCV;
 		int supply;
 		int maxSupply;
 		int nbBarracks;
@@ -25,7 +30,8 @@ public:
 
     // helper functions to get you started with bot programming and learn the API
     void sendIdleWorkersToMinerals();
-	void trainUnits(const BWAPI::UnitType UnitType, const BWAPI::UnitType Depot);
+	static void trainUnits(const BWAPI::UnitType UnitType, const BWAPI::UnitType Depot);
+	static void buildDepot(const BWAPI::UnitType DepotType);
 	void ScoutUnexploredMap();
     void drawDebugInformation();
 

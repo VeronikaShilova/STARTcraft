@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\BT_ACTION.h" />
-    <ClInclude Include="..\src\BT_CONDITION.h" />
+    <ClInclude Include="..\src\BT_LEAF.h" />
+    <ClInclude Include="..\src\BT_LIST.h" />
     <ClInclude Include="..\src\BT_NODE.h" />
     <ClInclude Include="..\src\BT_SELECTOR.h" />
     <ClInclude Include="..\src\BT_SEQUENCER.h" />
@@ -22,8 +22,8 @@
     <ClInclude Include="..\src\Tools.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\BT_ACTION.cpp" />
-    <ClCompile Include="..\src\BT_CONDITION.cpp" />
+    <ClCompile Include="..\src\BT_LEAF.cpp" />
+    <ClCompile Include="..\src\BT_LIST.cpp" />
     <ClCompile Include="..\src\BT_NODE.cpp" />
     <ClCompile Include="..\src\BT_SELECTOR.cpp" />
     <ClCompile Include="..\src\BT_SEQUENCER.cpp" />
