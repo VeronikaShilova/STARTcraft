@@ -13,7 +13,6 @@ namespace Tools
     BWAPI::Unit GetDepot(const BWAPI::UnitType depot);
 
     bool BuildBuilding(BWAPI::UnitType type);
-
     void DrawUnitBoundingBoxes();
     void DrawUnitCommands();
 
