@@ -22,6 +22,12 @@ BT_NODE::State maxSupplySuperiorTo(void* data) {
     return status(dataPtr->maxSupply > limitSupply);
 }
 
+template <int limitUnusedSupply>
+BT_NODE::State UnusedSupplyInferiorTo(void* data) {
+    StarterBot::Data* dataPtr = (StarterBot::Data*)data;
+    return status(dataPtr->unusedSupply > limitUnusedSupply);
+}
+
 template <int limitNbBarracks>
 BT_NODE::State nbBarracksInferiorTo(void* data) {
     StarterBot::Data* dataPtr = (StarterBot::Data*)data;
@@ -32,6 +38,12 @@ template <int limitMarine>
 BT_NODE::State nbMarinesInferiorTo(void* data){
     StarterBot::Data* dataPtr = (StarterBot::Data*)data;
     return status(dataPtr->nbMarines < limitMarine);
+}
+
+template <int limitMarine>
+BT_NODE::State nbMarinesis(void* data) {
+    StarterBot::Data* dataPtr = (StarterBot::Data*)data;
+    return status(dataPtr->nbMarines == limitMarine);
 }
 
 /* Action Callback */
@@ -81,26 +93,41 @@ BT_NODE::State recruitMarine(void* data) {
 BT_NODE* buildBT() {
 
     BT_NODE* behaviourTree = new BT_LIST(nullptr, 6);
-    BT_NODE* root;
 
-    root = new BT_SEQUENCER(behaviourTree, 2);
-    new BT_LEAF(root, SCVInferiorTo<8>);
-    new BT_LEAF(root, trainSCV);
+    BT_NODE* RecruiteSCV = new BT_SEQUENCER(behaviourTree, 2);
+    new BT_LEAF(RecruiteSCV, SCVInferiorTo<8>);
+    new BT_LEAF(RecruiteSCV, trainSCV);
 
-    root = new BT_SEQUENCER(behaviourTree, 2);
-    new BT_LEAF(root, SCVInferiorTo<11>);
-    new BT_LEAF(root, buildSupply);
+    BT_NODE* BuildSupply = new BT_SEQUENCER(behaviourTree, 2);
+    new BT_LEAF(BuildSupply, SCVInferiorTo<11>);
+    new BT_LEAF(BuildSupply, buildSupply);
 
-    root = new BT_SEQUENCER(behaviourTree, 2);
-    new BT_LEAF(root, nbBarracksInferiorTo<1>);
-    new BT_LEAF(root, buildBarracks);
+    BT_NODE* BuildBarrack = new BT_SEQUENCER(behaviourTree, 2);
+    new BT_LEAF(BuildBarrack, nbBarracksInferiorTo<1>);
+    new BT_LEAF(BuildBarrack, buildBarracks);
 
-    root = new BT_SEQUENCER(behaviourTree, 2);
-    new BT_LEAF(root, nbMarinesInferiorTo<8>);
-    new BT_LEAF(root, recruitMarine);
+    BT_NODE* RecuiteMarine = new BT_SEQUENCER(behaviourTree, 2);
+    new BT_LEAF(RecuiteMarine, nbMarinesInferiorTo<8>);
+    new BT_LEAF(RecuiteMarine, recruitMarine);
 
     return behaviourTree;
 }
+
+/* Attack Behaviour Tree */
+BT_NODE* attackBT() {
+    BT_NODE* behaviourTree = new BT_LIST(nullptr, 6);
+    
+    BT_NODE* BuildSupply = new BT_SEQUENCER(behaviourTree, 2);
+    new BT_LEAF(BuildSupply, UnusedSupplyInferiorTo<1>);
+    new BT_LEAF(BuildSupply, buildSupply);
+
+    BT_NODE* RecuiteMarine = new BT_SEQUENCER(behaviourTree, 2);
+    new BT_LEAF(RecuiteMarine, nbMarinesInferiorTo<24>);
+    new BT_LEAF(RecuiteMarine, recruitMarine);
+
+    return behaviourTree;
+}
+
 
 StarterBot::StarterBot() {
     data = new StarterBot::Data();
@@ -121,6 +148,7 @@ void StarterBot::onStart()
 
     // Build Behaviour Tree
     behaviourTree = buildBT();
+    BT_attack = attackBT();
 }
 
 // Called on each frame of the game
@@ -132,13 +160,21 @@ void StarterBot::onFrame()
     // update data
     data->SCV = Tools::CountUnitsOfType(BWAPI::UnitTypes::Terran_SCV, BWAPI::Broodwar->self()->getUnits());
     data->supply = Tools::CountUnitsOfType(BWAPI::UnitTypes::Terran_Supply_Depot, BWAPI::Broodwar->self()->getUnits());
+    data->unusedSupply = Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed()/2;
     data->nbBarracks = Tools::CountUnitsOfType(BWAPI::UnitTypes::Terran_Barracks, BWAPI::Broodwar->self()->getUnits());
     data->nbMarines = Tools::CountUnitsOfType(BWAPI::UnitTypes::Terran_Marine, BWAPI::Broodwar->self()->getUnits());
+    if (data->nbMarines == 8)
+        data->attack = true;
 
     // Run through the Behaviour Tree
-    behaviourTree->Evaluate(data);
-
-    sendMarinetoAttack(data);
+    if (!data->attack){
+        behaviourTree->Evaluate(data);
+    }
+    else { 
+        BT_attack->Evaluate(data);
+        sendMarinetoAttack();
+    }
+    
     //ScoutUnexploredMap();
 
     // Send our idle workers to mine minerals so they don't just stand there
@@ -186,7 +222,6 @@ void StarterBot::trainUnits(const BWAPI::UnitType UnittoTrain, const BWAPI::Unit
     if (myDepot && !myDepot->isTraining()) {
         myDepot->train(UnittoTrain);
     }
-
 }
 
 void StarterBot::buildDepot(const BWAPI::UnitType DepotType) {
@@ -194,35 +229,6 @@ void StarterBot::buildDepot(const BWAPI::UnitType DepotType) {
     if (startedBuilding)
     {
         BWAPI::Broodwar->printf("Started Building %s", DepotType.getName().c_str());
-    }
-}
-
-void StarterBot::sendMarinetoAttack(void* data){
-    StarterBot::Data* dataPtr = (StarterBot::Data*)data;
-    const BWAPI::Unitset& myUnits = BWAPI::Broodwar->self()->getUnits();
-    for (auto& unit : myUnits){
-        // if the unit is type Marine 
-        if (unit->getType() == BWAPI::UnitTypes::Terran_Marine && unit->isIdle()){
-            std::cout << "we have marine idle" << std::endl;
-            /*
-            BWAPI::TilePosition PlayerStart = BWAPI::Broodwar->enemy()->getStartLocation();
-            BWAPI::Position p_PlayerStart = BWAPI::Position(PlayerStart);
-
-            std::cout << "Enemy Start Location: " << p_PlayerStart << std::endl;
-            
-            BWAPI::Unitset PlayerUnit = BWAPI::Broodwar->enemy()->getUnits();
-            BWAPI::Unit closestPlayerStart = Tools::GetClosestUnitTo(p_PlayerStart, PlayerUnit); */
-
-            BWAPI::Unitset PlayerUnit = BWAPI::Broodwar->enemy()->getUnits();
-            BWAPI::Unit closestPlayerStart = Tools::GetClosestUnitTo(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()), PlayerUnit);
-
-            if (closestPlayerStart) {
-                std::cout << "Attacking" << std::endl;
-                unit->attack(closestPlayerStart);
-            }
-      
-        }
-
     }
 }
 
@@ -246,6 +252,35 @@ void StarterBot::ScoutUnexploredMap() {
         Scout->move(pos);
     }
 
+}
+
+void StarterBot::sendMarinetoAttack() {
+    const BWAPI::Unitset& myUnits = BWAPI::Broodwar->self()->getUnits();
+    for (auto& unit : myUnits) {
+        // if the unit is type Marine 
+        if (unit->getType() == BWAPI::UnitTypes::Terran_Marine && unit->isIdle()) {
+            BWAPI::TilePosition SelfStart = BWAPI::Broodwar->self()->getStartLocation();
+            auto& startLocations = BWAPI::Broodwar->getStartLocations();
+            BWAPI::Position enemy_pos;
+            for (BWAPI::TilePosition tp : startLocations) {
+                BWAPI::TilePosition EnemyStart;
+                if (tp != SelfStart) {
+                    EnemyStart = tp;
+                }
+                enemy_pos = BWAPI::Position(EnemyStart);
+            }
+
+            BWAPI::Unitset myEnemy = unit->getUnitsInRadius(200, BWAPI::Filter::CanAttack
+                && BWAPI::Filter::IsEnemy && !BWAPI::Filter::IsWorker);
+            if (!myEnemy.empty()) {
+                BWAPI::Unit closestEnemy = Tools::GetClosestUnitTo(unit, myEnemy);
+                unit->attack(closestEnemy);
+            }
+            if (enemy_pos) {
+                unit->attack(enemy_pos);
+            }
+        }
+    }
 }
 
 // Draw some relevent information to the screen to help us debug the bot
