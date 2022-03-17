@@ -64,10 +64,23 @@ bool Tools::BuildBuilding(BWAPI::UnitType type)
 {
     // Get the type of unit that is required to build the desired building
     BWAPI::UnitType builderType = type.whatBuilds().first;
-
+    BWAPI::Unit builder = GetUnitOfType(builderType);
     // Get a unit that we own that is of the given type so it can build
     // If we can't find a valid builder unit, then we have to cancel the building
-    BWAPI::Unit builder = Tools::GetUnitOfType(builderType);
+    const BWAPI::Unitset& myUnits = BWAPI::Broodwar->self()->getUnits();
+    //int i = 0;
+    for (auto& unit : myUnits)
+    {
+        //std::cout << i << std::endl;
+        // Check the unit type, if it is an idle worker, then we want to send it somewhere
+        if (unit->getType().isWorker() && unit->getBuildUnit() == nullptr)
+        {
+            builder = unit;
+            break;
+        }
+        //i++;
+    }
+
     if (!builder) { return false; }
 
     // Get a location that we want to build the building next to

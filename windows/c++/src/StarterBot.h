@@ -17,12 +17,15 @@ public:
 		int SCV;
 		int supply;
 		int maxSupply;
+		int unusedSupply;
 		int nbBarracks;
 		int nbMarines;
+		bool attack = false;
 	};
 
 	Data* data;
 	BT_NODE* behaviourTree;
+	BT_NODE* BT_attack;
 
 	BWAPI::Unit Scout = nullptr;
 
@@ -33,8 +36,7 @@ public:
 	static void trainUnits(const BWAPI::UnitType UnitType, const BWAPI::UnitType Depot);
 	static void buildDepot(const BWAPI::UnitType DepotType);
 	
-	void sendMarinetoAttack(void* data);
-	
+	void sendMarinetoAttack();
 	void ScoutUnexploredMap();
     void drawDebugInformation();
 
